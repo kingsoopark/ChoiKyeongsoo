@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>최경수 포트폴리오</title>
+<meta name="description" content="게임 콘텐츠 전공생 최경수의 AI 툴 × Unity 프로젝트 포트폴리오">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Gothic+A1:wght@400;500;700;900&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+  :root{
+    --bg:#F2F4EC;
+    --surface:#FFFFFF;
+    --surface-2:#EAEEE0;
+    --ink:#1B2118;
+    --ink-soft:#4B5245;
+    --ink-faint:#8A927D;
+    --accent:#4C7A32;
+    --accent-ink:#2E4A1E;
+    --spark:#C97F1F;
+    --line:#D7DCC9;
+    --line-strong:#BFC7AC;
+    --shadow: 0 1px 0 rgba(27,33,24,0.05);
+    color-scheme: light dark;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#12160F;
+      --surface:#181D14;
+      --surface-2:#1F251A;
+      --ink:#ECEEE2;
+      --ink-soft:#A8AF98;
+      --ink-faint:#6C7460;
+      --accent:#7FBF5A;
+      --accent-ink:#B9E6A0;
+      --spark:#E8A93C;
+      --line:#2A3122;
+      --line-strong:#38402C;
+      --shadow: 0 1px 0 rgba(0,0,0,0.35);
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#12160F;
+    --surface:#181D14;
+    --surface-2:#1F251A;
+    --ink:#ECEEE2;
+    --ink-soft:#A8AF98;
+    --ink-faint:#6C7460;
+    --accent:#7FBF5A;
+    --accent-ink:#B9E6A0;
+    --spark:#E8A93C;
+    --line:#2A3122;
+    --line-strong:#38402C;
+    --shadow: 0 1px 0 rgba(0,0,0,0.35);
+  }
+
+  *{ box-sizing:border-box; }
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--ink);
+    font-family:"Gothic A1", "Noto Sans KR", sans-serif;
+    font-weight:400;
+    line-height:1.65;
+    -webkit-font-smoothing:antialiased;
+  }
+  ::selection{ background:var(--accent); color:var(--bg); }
+
+  .mono{
+    font-family:"IBM Plex Mono","Consolas",monospace;
+    letter-spacing:0.02em;
+  }
+
+  .wrap{
+    max-width:920px;
+    margin:0 auto;
+    padding:0 28px;
+  }
+
+  a{ color:inherit; }
+
+  /* ---------- layout with side rail ---------- */
+  .grid{
+    display:grid;
+    grid-template-columns:40px 1fr;
+    column-gap:24px;
+  }
+  .rail{
+    position:relative;
+  }
+  .rail::before{
+    content:"";
+    position:absolute;
+    top:6px;
+    bottom:6px;
+    left:50%;
+    width:1px;
+    background:repeating-linear-gradient(to bottom, var(--line-strong) 0 4px, transparent 4px 9px);
+    transform:translateX(-50%);
+  }
+  .rail-node{
+    position:absolute;
+    left:50%;
+    top:6px;
+    width:9px;
+    height:9px;
+    border-radius:50%;
+    background:var(--bg);
+    border:2px solid var(--accent);
+    transform:translate(-50%,-50%);
+  }
+  @media (max-width:720px){
+    .grid{ grid-template-columns:1fr; }
+    .rail{ display:none; }
+  }
+
+  /* ---------- hero ---------- */
+  header.hero{
+    padding:76px 0 52px;
+    border-bottom:1px solid var(--line);
+    animation:rise 0.6s ease-out both;
+  }
+  @keyframes rise{
+    from{ opacity:0.001; transform:translateY(10px); }
+    to{ opacity:1; transform:translateY(0); }
+  }
+  @media (prefers-reduced-motion: reduce){
+    header.hero{ animation:none; }
+  }
+  .eyebrow{
+    font-family:"IBM Plex Mono",monospace;
+    font-size:12.5px;
+    letter-spacing:0.16em;
+    text-transform:uppercase;
+    color:var(--accent-ink);
+    display:flex;
+    align-items:center;
+    gap:10px;
+    margin-bottom:22px;
+  }
+  .eyebrow .dot{
+    width:7px; height:7px; border-radius:50%;
+    background:var(--spark);
+    box-shadow:0 0 0 3px color-mix(in srgb, var(--spark) 22%, transparent);
+  }
+  h1.name{
+    font-family:"Black Han Sans", "Gothic A1", sans-serif;
+    font-weight:400;
+    font-size:clamp(48px, 9vw, 84px);
+    line-height:1.02;
+    margin:0 0 20px;
+    letter-spacing:0.01em;
+    text-wrap:balance;
+  }
+  p.tagline{
+    font-size:clamp(17px,2.4vw,21px);
+    color:var(--ink-soft);
+    max-width:46ch;
+    margin:0 0 28px;
+    text-wrap:balance;
+  }
+  .contact-row{
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px 12px;
+    align-items:center;
+  }
+  .pill{
+    display:inline-flex;
+    align-items:center;
+    gap:7px;
+    padding:7px 14px;
+    border-radius:999px;
+    border:1px solid var(--line-strong);
+    background:var(--surface);
+    font-size:13.5px;
+    box-shadow:var(--shadow);
+  }
+  .pill.email{ font-family:"IBM Plex Mono",monospace; }
+  .pill strong{ color:var(--accent-ink); font-weight:700; }
+
+  /* ---------- section shell ---------- */
+  section{
+    padding:52px 0;
+    border-bottom:1px solid var(--line);
+  }
+  section:last-of-type{ border-bottom:none; }
+  .section-head{
+    display:flex;
+    align-items:baseline;
+    justify-content:space-between;
+    gap:16px;
+    margin-bottom:30px;
+  }
+  h2.section-title{
+    font-family:"Black Han Sans","Gothic A1",sans-serif;
+    font-weight:400;
+    font-size:26px;
+    margin:0;
+    letter-spacing:0.01em;
+  }
+  .section-num{
+    font-family:"IBM Plex Mono",monospace;
+    font-size:12.5px;
+    color:var(--ink-faint);
+  }
+
+  /* ---------- education ---------- */
+  .edu-card{
+    display:flex;
+    flex-wrap:wrap;
+    gap:20px 28px;
+    align-items:flex-start;
+    justify-content:space-between;
+    padding:22px 24px;
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:14px;
+  }
+  .edu-period{
+    font-family:"IBM Plex Mono",monospace;
+    font-size:13px;
+    color:var(--ink-soft);
+    margin-bottom:8px;
+  }
+  .edu-school{
+    font-size:19px;
+    font-weight:700;
+    margin:0 0 4px;
+  }
+  .edu-major{
+    color:var(--ink-soft);
+    font-size:15px;
+  }
+  .status-badge{
+    align-self:flex-start;
+    font-family:"IBM Plex Mono",monospace;
+    font-size:12px;
+    letter-spacing:0.05em;
+    padding:6px 12px;
+    border-radius:999px;
+    background:color-mix(in srgb, var(--accent) 16%, transparent);
+    color:var(--accent-ink);
+    border:1px solid color-mix(in srgb, var(--accent) 40%, transparent);
+    white-space:nowrap;
+  }
+
+  /* ---------- project ---------- */
+  .project-card{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:16px;
+    padding:30px;
+  }
+  .project-top{
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:space-between;
+    gap:14px;
+    margin-bottom:6px;
+  }
+  h3.project-title{
+    font-family:"Black Han Sans","Gothic A1",sans-serif;
+    font-weight:400;
+    font-size:26px;
+    margin:0;
+  }
+  .project-period{
+    font-family:"IBM Plex Mono",monospace;
+    font-size:13px;
+    color:var(--ink-soft);
+    white-space:nowrap;
+    padding-top:6px;
+  }
+  .project-meta{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+    gap:16px;
+    margin:22px 0 28px;
+    padding:18px 20px;
+    background:var(--surface-2);
+    border-radius:12px;
+  }
+  .meta-item .k{
+    font-family:"IBM Plex Mono",monospace;
+    font-size:11.5px;
+    letter-spacing:0.08em;
+    text-transform:uppercase;
+    color:var(--ink-faint);
+    margin-bottom:6px;
+  }
+  .meta-item .v{
+    font-size:15px;
+    font-weight:500;
+  }
+  .tech-tags{
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+  }
+  .tech-tag{
+    font-family:"IBM Plex Mono",monospace;
+    font-size:12.5px;
+    padding:4px 10px;
+    border-radius:7px;
+    background:var(--bg);
+    border:1px solid var(--line-strong);
+  }
+
+  /* pipeline */
+  .pipeline-label{
+    font-family:"IBM Plex Mono",monospace;
+    font-size:12px;
+    letter-spacing:0.1em;
+    text-transform:uppercase;
+    color:var(--ink-faint);
+    margin:0 0 16px;
+  }
+  .pipeline{
+    position:relative;
+    display:grid;
+    gap:0;
+  }
+  .pipe-step{
+    position:relative;
+    display:grid;
+    grid-template-columns:28px 1fr;
+    gap:16px;
+    padding-bottom:24px;
+  }
+  .pipe-step:last-child{ padding-bottom:0; }
+  .pipe-step:last-child .pipe-line{ display:none; }
+  .pipe-node{
+    position:relative;
+    display:flex;
+    justify-content:center;
+  }
+  .pipe-dot{
+    width:11px; height:11px;
+    border-radius:50%;
+    background:var(--accent);
+    margin-top:4px;
+    flex-shrink:0;
+    z-index:1;
+  }
+  .pipe-line{
+    position:absolute;
+    top:15px;
+    bottom:-9px;
+    left:50%;
+    width:1px;
+    background:var(--line-strong);
+    transform:translateX(-50%);
+  }
+  .pipe-body .h{
+    font-weight:700;
+    font-size:15.5px;
+    margin-bottom:5px;
+  }
+  .pipe-body p{
+    margin:0;
+    color:var(--ink-soft);
+    font-size:14.5px;
+  }
+
+  /* spark demo strip */
+  .spark-demo{
+    margin-top:28px;
+    padding:16px 20px;
+    border-radius:12px;
+    border:1px dashed var(--line-strong);
+    display:flex;
+    align-items:center;
+    gap:16px;
+    overflow:hidden;
+  }
+  .spark-caption{
+    font-family:"IBM Plex Mono",monospace;
+    font-size:12px;
+    color:var(--ink-faint);
+    flex-shrink:0;
+    max-width:22ch;
+  }
+  .spark-track{
+    position:relative;
+    flex:1;
+    height:22px;
+    min-width:80px;
+  }
+  .spark-rail{
+    position:absolute;
+    top:50%;
+    left:0; right:0;
+    height:1px;
+    background:var(--line-strong);
+  }
+  .spark-orb{
+    position:absolute;
+    top:50%;
+    width:12px; height:12px;
+    border-radius:50%;
+    background:var(--spark);
+    box-shadow:0 0 0 5px color-mix(in srgb, var(--spark) 18%, transparent);
+    transform:translate(-50%,-50%);
+    animation:drift 3.6s ease-in-out infinite;
+  }
+  .spark-orb.b{ animation-delay:-1.8s; opacity:0.55; }
+  @keyframes drift{
+    0%,100%{ left:6%; }
+    50%{ left:94%; }
+  }
+  @media (prefers-reduced-motion: reduce){
+    .spark-orb{ animation:none; left:50%; }
+  }
+
+  /* ---------- stack ---------- */
+  .stack-row{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+    gap:14px;
+  }
+  .stack-card{
+    padding:20px;
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:12px;
+  }
+  .stack-card .name{
+    font-weight:700;
+    font-size:16px;
+    margin-bottom:6px;
+  }
+  .stack-card .role{
+    font-size:13.5px;
+    color:var(--ink-soft);
+  }
+
+  /* ---------- footer ---------- */
+  footer{
+    padding:56px 0 70px;
+    text-align:center;
+  }
+  footer .line1{
+    font-family:"Black Han Sans","Gothic A1",sans-serif;
+    font-size:22px;
+    margin-bottom:14px;
+  }
+  footer .mail-link{
+    font-family:"IBM Plex Mono",monospace;
+    font-size:15px;
+    color:var(--accent-ink);
+    text-decoration:none;
+    border-bottom:1px solid color-mix(in srgb, var(--accent) 50%, transparent);
+  }
+  footer .fine{
+    margin-top:24px;
+    font-size:12.5px;
+    color:var(--ink-faint);
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="eyebrow"><span class="dot"></span>PORTFOLIO / 게임 콘텐츠 전공</div>
+    <h1 class="name">최경수</h1>
+    <p class="tagline">AI 툴과 유니티로 아이디어를 실체화하는 인재</p>
+    <div class="contact-row">
+      <span class="pill email">✉ <strong>kinsoopark@gmail.com</strong></span>
+      <span class="pill">유한대학교 · 컴퓨터공학과 게임콘텐츠전공</span>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <div class="grid">
+    <div class="rail"><div class="rail-node"></div></div>
+    <section id="education">
+      <div class="section-head">
+        <h2 class="section-title">학력</h2>
+        <span class="section-num mono">01</span>
+      </div>
+      <div class="edu-card">
+        <div>
+          <div class="edu-period">2022.03 — 2027.02</div>
+          <p class="edu-school">유한대학교</p>
+          <p class="edu-major">컴퓨터공학과 게임콘텐츠전공</p>
+        </div>
+        <span class="status-badge">재학중</span>
+      </div>
+    </section>
+  </div>
+
+  <div class="grid">
+    <div class="rail"><div class="rail-node"></div></div>
+    <section id="project">
+      <div class="section-head">
+        <h2 class="section-title">프로젝트 경험</h2>
+        <span class="section-num mono">02</span>
+      </div>
+
+      <article class="project-card">
+        <div class="project-top">
+          <h3 class="project-title">Slime Shift</h3>
+          <span class="project-period mono">2026.03 — 2026.06</span>
+        </div>
+
+        <div class="project-meta">
+          <div class="meta-item">
+            <div class="k">구분</div>
+            <div class="v">기획 / 문서</div>
+          </div>
+          <div class="meta-item">
+            <div class="k">역할</div>
+            <div class="v">게임 기획 서포트 및 아트/리소스 가공</div>
+          </div>
+          <div class="meta-item" style="grid-column:1/-1;">
+            <div class="k">사용 기술</div>
+            <div class="tech-tags">
+              <span class="tech-tag">Unity (Particle System)</span>
+              <span class="tech-tag">Google Gemini</span>
+              <span class="tech-tag">Photoroom</span>
+            </div>
+          </div>
+        </div>
+
+        <p class="pipeline-label">한 일 &amp; 성과 — 에셋 파이프라인</p>
+        <div class="pipeline">
+          <div class="pipe-step">
+            <div class="pipe-node"><span class="pipe-dot"></span><span class="pipe-line"></span></div>
+            <div class="pipe-body">
+              <div class="h">스테이지 이미지 자산 생성</div>
+              <p>Google Gemini를 활용해 스테이지 컨셉에 맞는 2D 그래픽 배경 및 기믹 이미지 자산을 생성 및 수급</p>
+            </div>
+          </div>
+          <div class="pipe-step">
+            <div class="pipe-node"><span class="pipe-dot"></span><span class="pipe-line"></span></div>
+            <div class="pipe-body">
+              <div class="h">2차 리소스 가공</div>
+              <p>Photoroom 툴을 활용해 생성된 이미지의 배경 투명화(누끼 작업) 및 워터마크 제거 등 인게임 적용을 위한 가공 진행</p>
+            </div>
+          </div>
+          <div class="pipe-step">
+            <div class="pipe-node"><span class="pipe-dot"></span><span class="pipe-line"></span></div>
+            <div class="pipe-body">
+              <div class="h">파티클 연출 구현</div>
+              <p>가공된 전기 자산을 Unity Particle System과 연동하여 동적으로 옆으로 움직이는 전기 장애물 시각 연출 구현</p>
+            </div>
+          </div>
+          <div class="pipe-step">
+            <div class="pipe-node"><span class="pipe-dot"></span></div>
+            <div class="pipe-body">
+              <div class="h">Prefab 모듈화</div>
+              <p>애니메이션 및 파티클이 적용된 장애물 연출을 Prefab으로 모듈화하여 팀원들이 즉시 스테이지에 배치할 수 있도록 제공</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="spark-demo">
+          <div class="spark-caption mono">구현한 전기 장애물 연출 &mdash; 옆으로 이동하는 파티클</div>
+          <div class="spark-track">
+            <div class="spark-rail"></div>
+            <div class="spark-orb"></div>
+            <div class="spark-orb b"></div>
+          </div>
+        </div>
+      </article>
+    </section>
+  </div>
+
+  <div class="grid">
+    <div class="rail"><div class="rail-node"></div></div>
+    <section id="stack">
+      <div class="section-head">
+        <h2 class="section-title">사용 도구</h2>
+        <span class="section-num mono">03</span>
+      </div>
+      <div class="stack-row">
+        <div class="stack-card">
+          <div class="name mono">Unity — Particle System</div>
+          <div class="role">동적 장애물 연출 및 Prefab 모듈화 구현</div>
+        </div>
+        <div class="stack-card">
+          <div class="name mono">Google Gemini</div>
+          <div class="role">스테이지 컨셉 기반 2D 이미지 자산 생성</div>
+        </div>
+        <div class="stack-card">
+          <div class="name mono">Photoroom</div>
+          <div class="role">배경 투명화 및 워터마크 제거 등 리소스 가공</div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="line1">함께 만들고 싶은 프로젝트가 있다면</div>
+    <a class="mail-link" href="mailto:kinsoopark@gmail.com">kinsoopark@gmail.com</a>
+    <div class="fine">최경수 · 유한대학교 컴퓨터공학과 게임콘텐츠전공</div>
+  </div>
+</footer>
+
+</body>
+</html>
