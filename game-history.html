@@ -1,254 +1,316 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>게임 플레이 이력 체크표</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>게임플레이이력체크표 · 최경수 포트폴리오</title>
+<meta name="description" content="최경수의 게임 플레이 이력 체크표">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Gothic+A1:wght@400;500;700;900&family=IBM+Plex+Mono:wght@400;500&display=swap">
 <style>
   :root{
-    --bg: #0f1115;
-    --panel: #171a21;
-    --panel-2: #1d212a;
-    --line: #2a2f3a;
-    --text: #e7e9ee;
-    --muted: #8b90a0;
-    --accent: #ff7a45;
-    --accent-dim: rgba(255,122,69,0.15);
-    --done: #43c98f;
-    --done-dim: rgba(67,201,143,0.12);
-    --radius: 10px;
-    --font-body: 'Pretendard', -apple-system, BlinkMacSystemFont, 'Malgun Gothic', sans-serif;
+    --bg:#F2F4EC;
+    --surface:#FFFFFF;
+    --surface-2:#EAEEE0;
+    --ink:#1B2118;
+    --ink-soft:#4B5245;
+    --ink-faint:#8A927D;
+    --accent:#4C7A32;
+    --accent-ink:#2E4A1E;
+    --spark:#C97F1F;
+    --line:#D7DCC9;
+    --line-strong:#BFC7AC;
+    --shadow: 0 1px 0 rgba(27,33,24,0.05);
+    color-scheme: light dark;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#12160F;
+      --surface:#181D14;
+      --surface-2:#1F251A;
+      --ink:#ECEEE2;
+      --ink-soft:#A8AF98;
+      --ink-faint:#6C7460;
+      --accent:#7FBF5A;
+      --accent-ink:#B9E6A0;
+      --spark:#E8A93C;
+      --line:#2A3122;
+      --line-strong:#38402C;
+      --shadow: 0 1px 0 rgba(0,0,0,0.35);
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#12160F;
+    --surface:#181D14;
+    --surface-2:#1F251A;
+    --ink:#ECEEE2;
+    --ink-soft:#A8AF98;
+    --ink-faint:#6C7460;
+    --accent:#7FBF5A;
+    --accent-ink:#B9E6A0;
+    --spark:#E8A93C;
+    --line:#2A3122;
+    --line-strong:#38402C;
+    --shadow: 0 1px 0 rgba(0,0,0,0.35);
   }
 
-  *{ box-sizing: border-box; }
-
+  *{ box-sizing:border-box; }
   body{
     margin:0;
-    background: var(--bg);
-    color: var(--text);
-    font-family: var(--font-body);
-    line-height: 1.5;
-    -webkit-font-smoothing: antialiased;
+    background:var(--bg);
+    color:var(--ink);
+    font-family:"Gothic A1", "Noto Sans KR", sans-serif;
+    font-weight:400;
+    line-height:1.65;
+    -webkit-font-smoothing:antialiased;
+  }
+  ::selection{ background:var(--accent); color:var(--bg); }
+
+  .mono{
+    font-family:"IBM Plex Mono","Consolas",monospace;
+    letter-spacing:0.02em;
   }
 
   .wrap{
-    max-width: 1180px;
-    margin: 0 auto;
-    padding: 48px 24px 80px;
+    max-width:1080px;
+    margin:0 auto;
+    padding:0 28px;
   }
 
-  header{
+  a{ color:inherit; }
+
+  /* ---------- hero (같은 스타일) ---------- */
+  header.hero{
+    padding:64px 0 40px;
+    border-bottom:1px solid var(--line);
+  }
+  .eyebrow{
+    font-family:"IBM Plex Mono",monospace;
+    font-size:12.5px;
+    letter-spacing:0.16em;
+    text-transform:uppercase;
+    color:var(--accent-ink);
     display:flex;
-    justify-content: space-between;
-    align-items: flex-end;
-    gap: 24px;
-    margin-bottom: 32px;
-    flex-wrap: wrap;
+    align-items:center;
+    gap:10px;
+    margin-bottom:18px;
+  }
+  .eyebrow .dot{
+    width:7px; height:7px; border-radius:50%;
+    background:var(--spark);
+    box-shadow:0 0 0 3px color-mix(in srgb, var(--spark) 22%, transparent);
+  }
+  .back-link{
+    font-family:"IBM Plex Mono",monospace;
+    font-size:12.5px;
+    color:var(--ink-faint);
+    text-decoration:none;
+    margin-left:auto;
+  }
+  .back-link:hover{ color:var(--accent-ink); }
+  h1.title{
+    font-family:"Black Han Sans", "Gothic A1", sans-serif;
+    font-weight:400;
+    font-size:clamp(32px, 6vw, 50px);
+    line-height:1.08;
+    margin:0 0 14px;
+    letter-spacing:0.01em;
+  }
+  p.sub{
+    font-size:15.5px;
+    color:var(--ink-soft);
+    max-width:60ch;
+    margin:0;
   }
 
-  h1{
-    font-size: 28px;
-    font-weight: 700;
-    margin: 0 0 6px;
-    letter-spacing: -0.01em;
+  /* ---------- progress ---------- */
+  .progress-row{
+    display:flex;
+    align-items:center;
+    gap:16px;
+    margin-top:28px;
+    flex-wrap:wrap;
   }
-
-  .sub{
-    color: var(--muted);
-    font-size: 14px;
-    margin: 0;
-  }
-
   .progress-box{
-    background: var(--panel);
-    border: 1px solid var(--line);
-    border-radius: var(--radius);
-    padding: 14px 20px;
-    min-width: 220px;
+    flex:1;
+    min-width:220px;
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:12px;
+    padding:14px 18px;
   }
-
   .progress-label{
     display:flex;
-    justify-content: space-between;
-    font-size: 13px;
-    color: var(--muted);
-    margin-bottom: 8px;
+    justify-content:space-between;
+    font-size:12.5px;
+    color:var(--ink-faint);
+    margin-bottom:8px;
+    font-family:"IBM Plex Mono",monospace;
   }
-
   .progress-label b{
-    color: var(--text);
-    font-weight: 600;
+    color:var(--accent-ink);
+    font-weight:700;
   }
-
   .progress-track{
-    height: 6px;
-    border-radius: 4px;
-    background: #262b35;
-    overflow: hidden;
+    height:6px;
+    border-radius:4px;
+    background:var(--surface-2);
+    overflow:hidden;
+  }
+  .progress-fill{
+    height:100%;
+    background:var(--accent);
+    border-radius:4px;
+    transition:width 0.3s ease;
+  }
+  .reset-btn{
+    background:var(--surface);
+    border:1px solid var(--line-strong);
+    color:var(--ink-soft);
+    border-radius:999px;
+    padding:10px 18px;
+    font-size:13px;
+    font-family:inherit;
+    cursor:pointer;
+    white-space:nowrap;
+  }
+  .reset-btn:hover{
+    border-color:var(--accent);
+    color:var(--accent-ink);
   }
 
-  .progress-fill{
-    height: 100%;
-    background: var(--accent);
-    border-radius: 4px;
-    transition: width 0.3s ease;
+  /* ---------- table section ---------- */
+  main.wrap{
+    padding:44px 28px 90px;
   }
 
   .table-scroll{
-    border: 1px solid var(--line);
-    border-radius: var(--radius);
-    overflow-x: auto;
-    background: var(--panel);
+    border:1px solid var(--line);
+    border-radius:16px;
+    overflow-x:auto;
+    background:var(--surface);
   }
 
   table{
-    width: 100%;
-    border-collapse: collapse;
-    min-width: 920px;
+    width:100%;
+    border-collapse:collapse;
+    min-width:920px;
   }
 
   thead th{
-    text-align: left;
-    font-size: 12px;
-    color: var(--muted);
-    font-weight: 600;
-    padding: 14px 14px;
-    border-bottom: 1px solid var(--line);
-    background: var(--panel-2);
-    white-space: nowrap;
-    position: sticky;
-    top: 0;
+    text-align:left;
+    font-family:"IBM Plex Mono",monospace;
+    font-size:11.5px;
+    letter-spacing:0.06em;
+    text-transform:uppercase;
+    color:var(--ink-faint);
+    font-weight:500;
+    padding:16px 16px;
+    border-bottom:1px solid var(--line);
+    background:var(--surface-2);
+    white-space:nowrap;
   }
 
   tbody td{
-    padding: 10px 14px;
-    border-bottom: 1px solid var(--line);
-    font-size: 14px;
-    vertical-align: middle;
+    padding:13px 16px;
+    border-bottom:1px solid var(--line);
+    font-size:14px;
+    vertical-align:middle;
   }
-
-  tbody tr:last-child td{
-    border-bottom: none;
-  }
-
+  tbody tr:last-child td{ border-bottom:none; }
   tbody tr.done{
-    background: var(--done-dim);
+    background:color-mix(in srgb, var(--accent) 7%, transparent);
   }
 
-  .col-no{ width: 44px; color: var(--muted); font-size: 13px; }
-  .col-date{ width: 66px; color: var(--muted); font-size: 13px; white-space: nowrap; }
-  .col-app{ min-width: 200px; font-weight: 600; }
-  .col-check{ width: 56px; text-align: center; }
-  .col-genre{ min-width: 150px; color: var(--muted); }
+  .col-no{ width:44px; color:var(--ink-faint); font-family:"IBM Plex Mono",monospace; font-size:13px; }
+  .col-date{ width:60px; color:var(--ink-faint); font-family:"IBM Plex Mono",monospace; font-size:13px; white-space:nowrap; }
+  .col-app{ min-width:200px; font-weight:700; }
+  .col-check{ width:56px; text-align:center; }
+  .col-genre{ min-width:160px; color:var(--ink-soft); font-size:13.5px; }
 
   .check{
-    width: 22px;
-    height: 22px;
-    border-radius: 6px;
-    border: 1.5px solid var(--line);
-    background: transparent;
-    cursor: pointer;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    color: var(--done);
-    font-size: 14px;
-    line-height: 1;
+    width:24px;
+    height:24px;
+    border-radius:7px;
+    border:1.5px solid var(--line-strong);
+    background:transparent;
+    cursor:pointer;
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    color:var(--accent-ink);
+    font-size:14px;
+    line-height:1;
+    font-weight:700;
   }
-
   .check.on{
-    border-color: var(--done);
-    background: var(--done-dim);
+    border-color:var(--accent);
+    background:color-mix(in srgb, var(--accent) 18%, transparent);
   }
 
   input.field{
-    width: 100%;
-    background: transparent;
-    border: none;
-    border-bottom: 1px solid transparent;
-    color: var(--text);
-    font-size: 14px;
-    font-family: inherit;
-    padding: 4px 2px;
-    min-width: 90px;
+    width:100%;
+    background:transparent;
+    border:none;
+    border-bottom:1px solid transparent;
+    color:var(--ink);
+    font-size:14px;
+    font-family:inherit;
+    padding:4px 2px;
+    min-width:90px;
   }
-
-  input.field::placeholder{
-    color: #565b68;
-  }
-
+  input.field::placeholder{ color:var(--ink-faint); }
   input.field:focus{
-    outline: none;
-    border-bottom: 1px solid var(--accent);
+    outline:none;
+    border-bottom:1px solid var(--accent);
   }
 
-  .desc-input{
-    min-width: 220px;
-  }
+  .desc-input{ min-width:220px; }
 
-  .app-name{
-    display:block;
-  }
+  .app-name.done{ color:var(--accent-ink); }
 
-  .app-name.done{
-    color: var(--done);
-  }
-
-  .app-note{
-    display:block;
-    font-size: 12px;
-    color: var(--muted);
-    margin-top: 2px;
-    font-weight: 400;
-  }
-
-  footer{
-    margin-top: 24px;
+  footer.page-footer{
+    margin-top:26px;
     display:flex;
-    justify-content: space-between;
-    align-items: center;
-    color: var(--muted);
-    font-size: 12px;
-    flex-wrap: wrap;
-    gap: 12px;
+    justify-content:space-between;
+    align-items:center;
+    color:var(--ink-faint);
+    font-size:12.5px;
+    font-family:"IBM Plex Mono",monospace;
+    flex-wrap:wrap;
+    gap:12px;
   }
 
-  .reset-btn{
-    background: transparent;
-    border: 1px solid var(--line);
-    color: var(--muted);
-    border-radius: 8px;
-    padding: 8px 14px;
-    font-size: 13px;
-    cursor: pointer;
-    font-family: inherit;
-  }
-
-  .reset-btn:hover{
-    border-color: var(--accent);
-    color: var(--accent);
-  }
-
-  @media (max-width: 720px){
-    .wrap{ padding: 32px 16px 60px; }
-    header{ flex-direction: column; align-items: flex-start; }
-    .progress-box{ width: 100%; }
+  @media (max-width:720px){
+    header.hero{ padding:48px 0 32px; }
+    main.wrap{ padding:32px 20px 70px; }
+    .eyebrow{ flex-wrap:wrap; }
+    .back-link{ margin-left:0; }
   }
 </style>
 </head>
 <body>
-<div class="wrap">
-  <header>
-    <div>
-      <h1>게임 플레이 이력 체크표</h1>
-      <p class="sub">9/10 ~ 9/23 플레이한 게임 목록 · 체크와 입력 내용은 이 브라우저에 자동 저장됩니다</p>
-    </div>
-    <div class="progress-box">
-      <div class="progress-label"><span>진행률</span><b id="progressText">0 / 14</b></div>
-      <div class="progress-track"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
-    </div>
-  </header>
 
+<header class="hero">
+  <div class="wrap">
+    <div class="eyebrow">
+      <span class="dot"></span>PORTFOLIO / 게임 콘텐츠 전공
+      <a class="back-link" href="index.html">← 포트폴리오로 돌아가기</a>
+    </div>
+    <h1 class="title">게임플레이이력체크표</h1>
+    <p class="sub">9/10 — 9/23 기간 동안 플레이한 게임 목록입니다. 체크와 입력 내용은 이 브라우저에 자동 저장됩니다.</p>
+
+    <div class="progress-row">
+      <div class="progress-box">
+        <div class="progress-label"><span>진행률</span><b id="progressText">0 / 14</b></div>
+        <div class="progress-track"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+      </div>
+      <button class="reset-btn" id="resetBtn">입력 내용 초기화</button>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
   <div class="table-scroll">
     <table>
       <thead>
@@ -267,11 +329,11 @@
     </table>
   </div>
 
-  <footer>
+  <footer class="page-footer">
     <span>총 14개 게임</span>
-    <button class="reset-btn" id="resetBtn">입력 내용 초기화</button>
+    <span>최경수 · 유한대학교 컴퓨터공학과 게임콘텐츠전공</span>
   </footer>
-</div>
+</main>
 
 <script>
   const GAMES = [
