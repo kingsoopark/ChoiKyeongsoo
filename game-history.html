@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>게임 플레이 이력 체크표</title>
+<style>
+  :root{
+    --bg: #0f1115;
+    --panel: #171a21;
+    --panel-2: #1d212a;
+    --line: #2a2f3a;
+    --text: #e7e9ee;
+    --muted: #8b90a0;
+    --accent: #ff7a45;
+    --accent-dim: rgba(255,122,69,0.15);
+    --done: #43c98f;
+    --done-dim: rgba(67,201,143,0.12);
+    --radius: 10px;
+    --font-body: 'Pretendard', -apple-system, BlinkMacSystemFont, 'Malgun Gothic', sans-serif;
+  }
+
+  *{ box-sizing: border-box; }
+
+  body{
+    margin:0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-body);
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .wrap{
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 48px 24px 80px;
+  }
+
+  header{
+    display:flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 24px;
+    margin-bottom: 32px;
+    flex-wrap: wrap;
+  }
+
+  h1{
+    font-size: 28px;
+    font-weight: 700;
+    margin: 0 0 6px;
+    letter-spacing: -0.01em;
+  }
+
+  .sub{
+    color: var(--muted);
+    font-size: 14px;
+    margin: 0;
+  }
+
+  .progress-box{
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 14px 20px;
+    min-width: 220px;
+  }
+
+  .progress-label{
+    display:flex;
+    justify-content: space-between;
+    font-size: 13px;
+    color: var(--muted);
+    margin-bottom: 8px;
+  }
+
+  .progress-label b{
+    color: var(--text);
+    font-weight: 600;
+  }
+
+  .progress-track{
+    height: 6px;
+    border-radius: 4px;
+    background: #262b35;
+    overflow: hidden;
+  }
+
+  .progress-fill{
+    height: 100%;
+    background: var(--accent);
+    border-radius: 4px;
+    transition: width 0.3s ease;
+  }
+
+  .table-scroll{
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    overflow-x: auto;
+    background: var(--panel);
+  }
+
+  table{
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 920px;
+  }
+
+  thead th{
+    text-align: left;
+    font-size: 12px;
+    color: var(--muted);
+    font-weight: 600;
+    padding: 14px 14px;
+    border-bottom: 1px solid var(--line);
+    background: var(--panel-2);
+    white-space: nowrap;
+    position: sticky;
+    top: 0;
+  }
+
+  tbody td{
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--line);
+    font-size: 14px;
+    vertical-align: middle;
+  }
+
+  tbody tr:last-child td{
+    border-bottom: none;
+  }
+
+  tbody tr.done{
+    background: var(--done-dim);
+  }
+
+  .col-no{ width: 44px; color: var(--muted); font-size: 13px; }
+  .col-date{ width: 66px; color: var(--muted); font-size: 13px; white-space: nowrap; }
+  .col-app{ min-width: 200px; font-weight: 600; }
+  .col-check{ width: 56px; text-align: center; }
+  .col-genre{ min-width: 150px; color: var(--muted); }
+
+  .check{
+    width: 22px;
+    height: 22px;
+    border-radius: 6px;
+    border: 1.5px solid var(--line);
+    background: transparent;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--done);
+    font-size: 14px;
+    line-height: 1;
+  }
+
+  .check.on{
+    border-color: var(--done);
+    background: var(--done-dim);
+  }
+
+  input.field{
+    width: 100%;
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid transparent;
+    color: var(--text);
+    font-size: 14px;
+    font-family: inherit;
+    padding: 4px 2px;
+    min-width: 90px;
+  }
+
+  input.field::placeholder{
+    color: #565b68;
+  }
+
+  input.field:focus{
+    outline: none;
+    border-bottom: 1px solid var(--accent);
+  }
+
+  .desc-input{
+    min-width: 220px;
+  }
+
+  .app-name{
+    display:block;
+  }
+
+  .app-name.done{
+    color: var(--done);
+  }
+
+  .app-note{
+    display:block;
+    font-size: 12px;
+    color: var(--muted);
+    margin-top: 2px;
+    font-weight: 400;
+  }
+
+  footer{
+    margin-top: 24px;
+    display:flex;
+    justify-content: space-between;
+    align-items: center;
+    color: var(--muted);
+    font-size: 12px;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .reset-btn{
+    background: transparent;
+    border: 1px solid var(--line);
+    color: var(--muted);
+    border-radius: 8px;
+    padding: 8px 14px;
+    font-size: 13px;
+    cursor: pointer;
+    font-family: inherit;
+  }
+
+  .reset-btn:hover{
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+
+  @media (max-width: 720px){
+    .wrap{ padding: 32px 16px 60px; }
+    header{ flex-direction: column; align-items: flex-start; }
+    .progress-box{ width: 100%; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div>
+      <h1>게임 플레이 이력 체크표</h1>
+      <p class="sub">9/10 ~ 9/23 플레이한 게임 목록 · 체크와 입력 내용은 이 브라우저에 자동 저장됩니다</p>
+    </div>
+    <div class="progress-box">
+      <div class="progress-label"><span>진행률</span><b id="progressText">0 / 14</b></div>
+      <div class="progress-track"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+    </div>
+  </header>
+
+  <div class="table-scroll">
+    <table>
+      <thead>
+        <tr>
+          <th class="col-no">순번</th>
+          <th class="col-date">날짜</th>
+          <th class="col-app">앱</th>
+          <th class="col-check">완료</th>
+          <th>기간</th>
+          <th>레벨/티어</th>
+          <th class="col-genre">장르</th>
+          <th>게임 설명</th>
+        </tr>
+      </thead>
+      <tbody id="tbody"></tbody>
+    </table>
+  </div>
+
+  <footer>
+    <span>총 14개 게임</span>
+    <button class="reset-btn" id="resetBtn">입력 내용 초기화</button>
+  </footer>
+</div>
+
+<script>
+  const GAMES = [
+    { date: "9/10", app: "제우스: 오만의 신", genre: "MMORPG" },
+    { date: "9/11", app: "리니지M", genre: "MMORPG" },
+    { date: "9/12", app: "SOL: enchant", genre: "MMORPG" },
+    { date: "9/13", app: "WOS: 화이트아웃 서바이벌", genre: "전략 시뮬레이션(생존)" },
+    { date: "9/14", app: "킹샷: Kingshot", genre: "전략 시뮬레이션" },
+    { date: "9/15", app: "오딘: 발할라 라이징", genre: "MMORPG" },
+    { date: "9/16", app: "메이플 키우기", genre: "방치형 RPG" },
+    { date: "9/17", app: "이클립스: 더 어웨이크닝", genre: "MMORPG" },
+    { date: "9/18", app: "로블록스 (Roblox)", genre: "샌드박스/메타버스" },
+    { date: "9/19", app: "가십하버: 합성 & 스토리 게임", genre: "퍼즐/합성·스토리" },
+    { date: "9/20", app: "로얄 매치 Royal Match", genre: "퍼즐(매치3)" },
+    { date: "9/21", app: "운빨존많겜", genre: "캐주얼 전략 타워 디펜스" },
+    { date: "9/22", app: "라스트 워: 서바이벌", genre: "전략 시뮬레이션" },
+    { date: "9/23", app: "열혈강호: 넥스트", genre: "MMORPG" }
+  ];
+
+  const STORAGE_KEY = "game-play-checklist-v1";
+
+  function loadState(){
+    try{
+      const raw = localStorage.getItem(STORAGE_KEY);
+      return raw ? JSON.parse(raw) : {};
+    }catch(e){
+      return {};
+    }
+  }
+
+  function saveState(state){
+    try{
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    }catch(e){ /* ignore */ }
+  }
+
+  let state = loadState();
+
+  function getRow(i){
+    if(!state[i]) state[i] = { done:false, period:"", level:"", desc:"" };
+    return state[i];
+  }
+
+  const tbody = document.getElementById("tbody");
+  const progressText = document.getElementById("progressText");
+  const progressFill = document.getElementById("progressFill");
+
+  function updateProgress(){
+    const doneCount = GAMES.reduce((acc, _, i) => acc + (getRow(i).done ? 1 : 0), 0);
+    progressText.textContent = `${doneCount} / ${GAMES.length}`;
+    progressFill.style.width = `${(doneCount / GAMES.length) * 100}%`;
+  }
+
+  function render(){
+    tbody.innerHTML = "";
+    GAMES.forEach((g, i) => {
+      const row = getRow(i);
+      const tr = document.createElement("tr");
+      tr.className = row.done ? "done" : "";
+
+      tr.innerHTML = `
+        <td class="col-no">${i + 1}</td>
+        <td class="col-date">${g.date}</td>
+        <td class="col-app"><span class="app-name ${row.done ? 'done' : ''}">${g.app}</span></td>
+        <td class="col-check"><button class="check ${row.done ? 'on' : ''}" data-idx="${i}" aria-label="완료 체크">${row.done ? '✓' : ''}</button></td>
+        <td><input class="field" data-idx="${i}" data-field="period" placeholder="예: 3일" value="${row.period}"></td>
+        <td><input class="field" data-idx="${i}" data-field="level" placeholder="레벨/티어" value="${row.level}"></td>
+        <td class="col-genre">${g.genre}</td>
+        <td><input class="field desc-input" data-idx="${i}" data-field="desc" placeholder="게임 설명" value="${row.desc}"></td>
+      `;
+      tbody.appendChild(tr);
+    });
+
+    tbody.querySelectorAll(".check").forEach(btn => {
+      btn.addEventListener("click", () => {
+        const i = btn.dataset.idx;
+        const row = getRow(i);
+        row.done = !row.done;
+        saveState(state);
+        render();
+        updateProgress();
+      });
+    });
+
+    tbody.querySelectorAll("input.field").forEach(input => {
+      input.addEventListener("input", () => {
+        const i = input.dataset.idx;
+        const field = input.dataset.field;
+        const row = getRow(i);
+        row[field] = input.value;
+        saveState(state);
+      });
+    });
+
+    updateProgress();
+  }
+
+  document.getElementById("resetBtn").addEventListener("click", () => {
+    if(confirm("입력한 체크 및 내용을 모두 초기화할까요?")){
+      state = {};
+      saveState(state);
+      render();
+    }
+  });
+
+  render();
+</script>
+</body>
+</html>
